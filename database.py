@@ -24,6 +24,7 @@ def get_file(txtFile, company):
     else:                   
         #Create database file/connect to it
         conn = sql.connect("companies.db")
+
         try:
         #Create table
             query = """CREATE TABLE {name} (raw TEXT, co2 TEXT, imports TEXT, reusable TEXT)""".format(name=company)
@@ -32,33 +33,29 @@ def get_file(txtFile, company):
 
             print("table created")
         except:
-            print("Table alr existed")
+            print("Table already exists.")
+
+        #Get all rows from csv file
+        with open(txtFile, newline='') as f:
+            reader = csv.reader(f)
+            next(reader) #skip headers line
+            data = list(reader)
+
+        #Connect to database
+        cur = conn.cursor()
+        
+        for row in data:
+            #Load all rows
+            insert_query = "INSERT INTO " + company + """ (raw, co2,
+                                                        imports, reusable) VALUES (?,?,?,?)"""
+            cur.execute(insert_query, (row[0], row[1], row[2], row[3]))
+
+        #Save changes
+        conn.commit()
 
         conn.close()
-    
-def new_company_data(csv_file, company): #Pass in an array of info (email, interest) like this
-    #Get all rows from csv file
-    with open(csv_file, newline='') as f:
-        reader = csv.reader(f)
-        next(reader) #skip headers line
-        data = list(reader)
 
-    #Connect to database
-    conn = sql.connect("companies.db")
-    cur = conn.cursor()
-    
-    for row in data:
-        #Load all rows
-        insert_query = "INSERT INTO " + company + """ (raw, co2,
-                                                    imports, reusable) VALUES (?,?,?,?)"""
-        cur.execute(insert_query, (row[0], row[1], row[2], row[3]))
-
-    #Save changes
-    conn.commit()
-
-    conn.close()
-
-    print("Loading completed")
+        print("Loading completed")
 
 # ---- DEBUGGING ---------
 def list_all(company): 
@@ -74,13 +71,8 @@ def list_all(company):
     print(rows)
 # -------------------------
 
-# get_file("companies.csv", "Safari")
-# new_company_data("Amazon.db", [80.0, 19.2, 22.23, 73.77])
+# get_file("validCompanies.csv", "Amazon")
 # list_all("Amazon")
-
-get_file("validCompanies.csv", "Amazon")
-new_company_data("validCompanies.csv", "Amazon")
-list_all("Amazon")
 
 def create_logins():
 #Create database file/connect to it
@@ -88,6 +80,19 @@ def create_logins():
         try:
         #Create table
             query = """CREATE TABLE logins (company TEXT, email TEXT PRIMARY KEY, password TEXT)"""
+
+            conn.execute(query)
+
+            print("table created")
+        except:
+            print("Table alr existed")
+
+def create_comp_size():
+#Create database file/connect to it
+        conn = sql.connect("logins.db")
+        try:
+        #Create table
+            query = """CREATE TABLE company_size (company TEXT PRIMARY KEY, company_size int)"""
 
             conn.execute(query)
 
@@ -114,12 +119,31 @@ def new_logins(): #Pass in an array of info (email, interest) like this
 
     print("Loading completed")
 
+def new_comp_size(): #Pass in an array of info (email, interest) like this
+    #Connect to database
+    conn = sql.connect("logins.db")
+    cur = conn.cursor()
+    
+    #Load all rows
+    insert_query = """INSERT INTO company_size (company, company_size) VALUES (?,?)"""
+    cur.execute(insert_query, ("Amazon", 150))
+    cur.execute(insert_query, ("Cisco", 803))
+    cur.execute(insert_query, ("Palantir", 124))
+    cur.execute(insert_query, ("HRT", 324))
+
+    #Save changes
+    conn.commit()
+
+    conn.close()
+
+    print("Loading completed")
+
 # ---- DEBUGGING ---------
 def list_all(): 
     conn = sql.connect("logins.db")
     cur = conn.cursor()
 
-    cur.execute("select * from logins")
+    cur.execute("select * from company_size")
     
     rows = list(cur.fetchall())
 
