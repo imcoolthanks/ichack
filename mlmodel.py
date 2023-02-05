@@ -4,12 +4,13 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
 import random
-import pickle
 
 RAW_WEIGHT = 0.1
 CO2_WEIGHT = 0.45
 IMPORT_WEIGHT = 0.15
 REUSABLE_WEIGHT = 0.2
+CO2_AVG = 8196721.31147541
+RAW_AVG = 8852
 
 def generate_dummy_df():
         companies = []
@@ -90,15 +91,30 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
 
 # Train the model
 model = LogisticRegression(multi_class='auto', solver='lbfgs')
-model.fit(X_train.values, y_train)
+model.fit(X_train, y_train)
 print(X_train)
 print("This is X test:")
 print(X_test)
 print(y_test)
 
 # Evaluate the model on the test data
-score = model.score(X_test.values, y_test)
+score = model.score(X_test, y_test)
 print("Accuracy:", score)
 
-with open('model.sav', 'wb') as file:
-        pickle.dump(model, file)
+
+
+
+
+companies = [[7000*RAW_WEIGHT / 1000,6*CO2_WEIGHT,20 * IMPORT_WEIGHT,80 * REUSABLE_WEIGHT], [7000*RAW_WEIGHT / 1000,2*CO2_WEIGHT,5 * IMPORT_WEIGHT,100 * REUSABLE_WEIGHT]]
+df = pd.DataFrame(companies, columns = ["raw", "co2", "import", "reusable"])
+scaler = StandardScaler()
+standardized_data = scaler.fit_transform(df)
+standardized_df = pd.DataFrame(standardized_data, columns=df.columns)
+df = standardized_df
+# Sort the data 
+# if co2 or foreign is high then negative score
+df['co2'] = df['co2'].apply(lambda x: x*-1)
+df['import'] = df['import'].apply(lambda x: x*-1)
+
+predicted_ranks = model.predict(df)
+print("Predicted Ranks:", predicted_ranks)
