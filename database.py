@@ -16,21 +16,22 @@ def create_company(company):
 
     conn.close()
 
-def new_company_data(company, row): #Pass in an array of info (email, interest) like this
-    # #Get all rows from csv file
-    # with open(csv_file, newline='') as f:
-    #     reader = csv.reader(f)
-    #     next(reader) #skip headers line
-    #     data = list(reader)
+def new_company_data(csv_file, company, row): #Pass in an array of info (email, interest) like this
+    #Get all rows from csv file
+    with open(csv_file, newline='') as f:
+        reader = csv.reader(f)
+        next(reader) #skip headers line
+        data = list(reader)
 
     #Connect to database
     conn = sql.connect("companies.db")
     cur = conn.cursor()
-
-    #Load all rows
-    insert_query = "INSERT INTO " + company + """ (raw, co2,
-                                                imports, reusable) VALUES (?,?,?,?)"""
-    cur.execute(insert_query, (row[0], row[1], row[2], row[3]))
+    
+    for row in data:
+        #Load all rows
+        insert_query = "INSERT INTO " + company + """ (raw, co2,
+                                                    imports, reusable) VALUES (?,?,?,?)"""
+        cur.execute(insert_query, (row[0], row[1], row[2], row[3]))
 
     #Save changes
     conn.commit()
