@@ -7,10 +7,14 @@ app = Flask(__name__)
 @app.route('/')
 def unloggedin():
     return render_template("unloggedin.html")
+  
+@app.route('/aboutus/')
+def about_us():
+  return render_template("about_us.html")
 
-@app.route('/home/')
-def home():
-    return render_template("home.html")
+@app.route('/benefits/')
+def benefits():
+  return render_template("benefits.html")
 
 @app.route('/dashboard/')
 def dashboard():
