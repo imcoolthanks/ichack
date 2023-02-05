@@ -91,14 +91,14 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
 
 # Train the model
 model = LogisticRegression(multi_class='auto', solver='lbfgs')
-model.fit(X_train, y_train)
+model.fit(X_train.values, y_train)
 print(X_train)
 print("This is X test:")
 print(X_test)
 print(y_test)
 
 # Evaluate the model on the test data
-score = model.score(X_test, y_test)
+score = model.score(X_test.values, y_test)
 print("Accuracy:", score)
 
 companies = np.array([[-0.187780, 0.186108, -0.101936, -0.075336]])
