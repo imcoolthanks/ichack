@@ -6,10 +6,8 @@ from werkzeug.utils import secure_filename
 import sqlite3 as sql
 import json
 
-UPLOAD_FOLDER = "../Flask/logFiles"
-ALLOWED_EXTENSIONS = set(['.csv', '.txt'])
-
 app = Flask(__name__)
+UPLOAD_FOLDER = ['/csvFiles']
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 @app.route('/')
@@ -70,9 +68,9 @@ def _login(email, password):
 def setting():
     return render_template("setting.html")
   
-@app.route('/csv_download')
+@app.route('/csv_download', methods=['GET', 'POST'])
 def csv_download():
-    file = request.files['file']
-    filename = secure_filename(file.filename)
-    file.save(os.path.join(app.config['../Flask/csvFiles'], filename))
-    return redirect("/setting")
+    if request.method == 'POST':
+        file = request.form['csv']
+        file.save(os.path.join(app.config['UPLOAD_FOLDER'], file.filename))
+    return redirect('/setting')
