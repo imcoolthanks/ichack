@@ -73,7 +73,7 @@ def plot(company):
     plt.title('CO2 emissions')
     plt.xticks(np.arange(min(years), max(years)+1, 10.0))
     
-    plt.ylabel("Mass /g")
+    plt.ylabel("Million Tonnes")
     scale = (min(co2_data) - max(co2_data))/2
     plt.gca().set_ylim([min(co2_data) + scale, max(co2_data) - scale])
     
@@ -92,7 +92,7 @@ def plot(company):
     plt.title('Percentage of foreign imports of materials')
     plt.xticks(np.arange(min(years), max(years)+1, 1.0))
     
-    plt.ylabel("Mass /g")
+    plt.ylabel("Percentage %")
     scale = (min(percentage_foreign) - max(percentage_foreign))/2
     plt.gca().set_ylim([min(percentage_foreign) + scale, max(percentage_foreign) - scale])
     
@@ -111,7 +111,7 @@ def plot(company):
     plt.title('Percentage of reusable material')
     plt.xticks(np.arange(min(years), max(years)+1, 1.0))
     
-    plt.ylabel("Mass /g")
+    plt.ylabel("Percentage %")
     scale = (min(percentage_reusable) - max(percentage_reusable))/2
     plt.gca().set_ylim([min(percentage_reusable) + scale, max(percentage_reusable) - scale])
     
