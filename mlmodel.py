@@ -20,9 +20,11 @@ def generate_dummy_df():
                 co2Million = round(random.uniform(8, 10), 6)
                 impManufacturing = round(random.uniform(20, 30), 6)
                 reusable = round(random.uniform(40, 100), 6)
-                companies.append([raw * RAW_WEIGHT,
-                co2Million * CO2_WEIGHT,
-                impManufacturing * IMPORT_WEIGHT, reusable * REUSABLE_WEIGHT])
+                companySize = round(random.uniform(1, 1000), 6)
+                companies.append([raw * RAW_WEIGHT / companySize,
+                co2Million * CO2_WEIGHT / companySize,
+                impManufacturing * IMPORT_WEIGHT,
+                reusable * REUSABLE_WEIGHT])
 
         df = pd.DataFrame(companies, columns 
         = ["raw", "co2", "import", "reusable"])
@@ -99,4 +101,6 @@ print(y_test)
 score = model.score(X_test, y_test)
 print("Accuracy:", score)
 
-
+companies = np.array([[-0.187780, 0.186108, -0.101936, -0.075336]])
+predicted_ranks = model.predict(companies)
+print("Predicted Ranks:", predicted_ranks[0])
