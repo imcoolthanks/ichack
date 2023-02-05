@@ -24,9 +24,12 @@ def benefits():
 
 @app.route('/dashboard/<name>/<cat>', methods=["GET"])
 def dashboard(name, cat):
-    types = ["raw", "co2", "imports", "reusables"]
+    types = ["raw", "co2", "imports", "reusables", "suggestions"]
     index = str(types.index(cat))
-    return render_template("dashboard.html", company=name, graph_url='Assets/graphs/'+name+index+".png", cat = cat)
+    if index == "4": 
+        return render_template("dashboard.html", company=name, graph_url="suggestions", cat = cat)
+    else:
+        return render_template("dashboard.html", company=name, graph_url='Assets/graphs/'+name+index+".png", cat = cat)
 
 @app.route("/login/", methods = ['POST', 'GET'])
 def login():                

@@ -103,13 +103,9 @@
             <main class="py-6 bg-surface-secondary">
                 <div class="container-fluid">
                     <!-- Card stats -->
-                    {% if graph_url == "suggestions" %}
-                        <h1>HI</h1>
-                    {% else %}
-                        <div class="card shadow border-0 mb-7">
-                            <img style="padding:5em;" src="{{ url_for('static', filename=graph_url)}}">
-                        </div>
-                    {% endif %}
+                    <div class="card shadow border-0 mb-7">
+                        <h style="padding:5em;"> {{graph_url}} </h>
+                    </div>
                 </div>
             </main>
         </div>

@@ -138,6 +138,7 @@ p {
   height: 100%;
   filter: brightness(40%);
   z-index: -10000;
+  opacity: 0.8;
 }
 /*-----------------------------------------------------------
   3. Buttons & Links
