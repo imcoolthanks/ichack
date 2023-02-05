@@ -326,6 +326,10 @@ p {
 .hero p {
   margin-bottom: 50px;
 }
+.unloggedin-header {
+  background-color: aliceblue;
+  width: 100%;
+}
 /*-----------------------------------------------------------
   5. Services
 -------------------------------------------------------------*/
