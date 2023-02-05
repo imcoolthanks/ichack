@@ -4,12 +4,10 @@ import os
 from flask import Flask, render_template, Response, request, redirect, url_for
 from werkzeug.utils import secure_filename
 import sqlite3 as sql
-
-
-UPLOAD_FOLDER = "../Flask/logFiles"
-ALLOWED_EXTENSIONS = set(['.csv', '.txt'])
+import json
 
 app = Flask(__name__)
+UPLOAD_FOLDER = ['./csvFiles/']
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 @app.route('/')
@@ -81,7 +79,7 @@ def graph(company):
 def setting():
     return render_template("setting.html")
   
-@app.route('/csv_download')
+@app.route('/csv_download', methods=['GET', 'POST'])
 def csv_download():
     file = request.files['file']
     filename = secure_filename(file.filename)
