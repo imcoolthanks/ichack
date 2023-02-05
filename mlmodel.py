@@ -1,22 +1,31 @@
-import pandas as pd
 import numpy as np
-from sklearn.model_selection import train_test_split
+import pandas as pd
+from sklearn.linear_model import LogisticRegression
 from sklearn.preprocessing import StandardScaler
+from sklearn.model_selection import train_test_split
 import random
+
+RAW_WEIGHT = 0.1
+CO2_WEIGHT = 0.45
+IMPORT_WEIGHT = 0.15
+REUSABLE_WEIGHT = 0.2
+CO2_AVG = 8196721.31147541
+RAW_AVG = 8852
 
 def generate_dummy_df():
         companies = []
 
-        for i in range(10): 
-                # raw average = 8852 
-                raw = round(random.uniform(7000, 9000), 6) 
-                #co2 average = 8,196,721.31147541
+        for i in range(1000000): 
+                raw = round(random.uniform(7000, 9000), 6)
                 co2Million = round(random.uniform(8, 10), 6)
                 impManufacturing = round(random.uniform(20, 30), 6)
                 reusable = round(random.uniform(40, 100), 6)
-                companies.append([raw, co2Million, impManufacturing, reusable])
+                companies.append([raw * RAW_WEIGHT,
+                co2Million * CO2_WEIGHT,
+                impManufacturing * IMPORT_WEIGHT, reusable * REUSABLE_WEIGHT])
 
-        df = pd.DataFrame(companies, columns = ["raw", "co2", "import", "reusable"])
+        df = pd.DataFrame(companies, columns 
+        = ["raw", "co2", "import", "reusable"])
 
         scaler = StandardScaler()
         standardized_data = scaler.fit_transform(df)
@@ -50,7 +59,8 @@ def generate_dummy_df():
                 (df['RowNumber'] > block*4) & (df['RowNumber'] <= block*5)
         ]
 
-        # create a new column and use np.select to assign values to it using our lists as arguments
+        # create a new column and use np.select to assign values to it
+        #  using our lists as arguments
         df['Rating'] = np.select(conditions, ratings)
         df = df.drop(columns=['RowNumber'])
 
@@ -67,16 +77,26 @@ for i in range(int(len(data)/5)):
                 indexes.append(i + j*int(len(data)/5))
 data = data.reindex(indexes)
 
+print(data)
+
 # Organize our data and split the data
 label_names = data['Rating']
-features = data.drop(columns=['Rating'])
 
-train, test, train_labels, test_labels = train_test_split(features,
-                                                          label_names,
-                                                          test_size=0.33,
-                                                          shuffle = False,
-                                                          random_state=42)
+# Split the data into training and testing sets
+X = data[['raw', 'co2', 'import', 'reusable']]
+y = data['Rating']
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
 
+# Train the model
+model = LogisticRegression(multi_class='auto', solver='lbfgs')
+model.fit(X_train, y_train)
+print(X_train)
+print("This is X test:")
+print(X_test)
+print(y_test)
 
+# Evaluate the model on the test data
+score = model.score(X_test, y_test)
+print("Accuracy:", score)
 
 
