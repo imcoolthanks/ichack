@@ -10,8 +10,8 @@ REUSABLE_WEIGHT = 0.2
 
 with open('model.sav', 'rb') as file:
     loaded_model = pickle.load(file)
-    data = np.genfromtxt('validCompanies.csv', delimiter=",")[1:]
-    sizes = np.genfromtxt('companySizes.csv')[1:]
+    data = np.genfromtxt('test/companies.csv', delimiter=",")[1:]
+    sizes = np.genfromtxt('test/companySizes.csv')[1:]
 
     df = pd.DataFrame(data, columns = ["raw", "co2", "import", "reusable"])
 
@@ -37,4 +37,4 @@ with open('model.sav', 'rb') as file:
     rankings = loaded_model.predict(data)
 
     print(rankings) 
-    pd.DataFrame(rankings).to_csv("rankings.csv", header = None)
+    pd.DataFrame(rankings).to_csv("test/rankings.csv", header = None)
