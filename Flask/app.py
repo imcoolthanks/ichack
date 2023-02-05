@@ -7,7 +7,7 @@ import sqlite3 as sql
 import json
 
 app = Flask(__name__)
-UPLOAD_FOLDER = ['/csvFiles']
+UPLOAD_FOLDER = ['./csvFiles/']
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 @app.route('/')
@@ -81,6 +81,8 @@ def setting():
 @app.route('/csv_download', methods=['GET', 'POST'])
 def csv_download():
     if request.method == 'POST':
-        file = request.form['csv']
-        file.save(os.path.join(app.config['UPLOAD_FOLDER'], file.filename))
+        file = request.files['csv']
+        # filename = secure_filename(file.filename)
+        # print(app.config['UPLOAD_FOLDER'])
+        # file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
     return redirect('/setting')
