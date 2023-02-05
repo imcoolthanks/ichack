@@ -1,3 +1,5 @@
+# run with py -m flask --app="Flask/app.py" run
+
 from flask import Flask, render_template
 
 app = Flask(__name__)
