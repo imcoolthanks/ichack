@@ -150,4 +150,6 @@ def list_all():
 
     print(rows)
 
+create_logins()
+new_logins()
 list_all()

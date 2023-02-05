@@ -11,6 +11,9 @@ messeges = ['''Your CO2 emissions were higher than average, try to cut down on
             lower than average, and your percentage of reusable materials was 
             higher than average. You're company is sustainable! Keep it up!''']
 
+
+
+
 company = data[0]
 returnmessege = ''
 

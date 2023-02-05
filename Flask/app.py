@@ -24,10 +24,40 @@ def benefits():
 
 @app.route('/dashboard/<name>/<cat>', methods=["GET"])
 def dashboard(name, cat):
+    from mlmodel import averages
+
+    def suggestions(company):
+        messeges = ['''Your CO2 emissions were higher than average, try to cut down on 
+                your emissions for a better rating.''',
+                '''Your percentage of foreign imports of materials was higher than 
+                average, try to source materials nationally for a better rating.''',
+                '''Your percentage of reusable materials was lower than average, 
+                try to find more sustainable materials for a better rating.''',
+                ''' Your CO2 emissions and percentage of foreign imports were both 
+                lower than average, and your percentage of reusable materials was 
+                higher than average. You're company is sustainable! Keep it up!''']
+
+        raw, co2, imports, reusables = get_data(company)
+
+        returnmessege = ''
+
+        if (float(co2[0]) < averages[0]) & ((float(imports[0])) < averages[1]) & ((float(reusables[0])) > averages[2]):
+            returnmessege = messeges[3]
+
+        if float(co2[0]) > averages[0]:
+            returnmessege = messeges[0]
+        if float(imports[0]) > averages[1]:
+            returnmessege = messeges[1]
+        if float(reusables[0]) < averages[2]:
+            returnmessege = messeges[2]
+        
+        return returnmessege
+
     types = ["raw", "co2", "imports", "reusables", "suggestions"]
     index = str(types.index(cat))
+    suggestions = suggestions(name)
     if index == "4": 
-        return render_template("dashboard.html", company=name, graph_url="suggestions", cat = cat)
+        return render_template("dashboard.html", company=name, suggestions=suggestions, graph_url="suggestions", cat = cat)
     else:
         return render_template("dashboard.html", company=name, graph_url='Assets/graphs/'+name+index+".png", cat = cat)
 
@@ -168,3 +198,4 @@ def plot(company):
         plt.text(years[index], percentage_reusable[index], percentage_reusable[index], size=6)
     save_url = 'Assets/graphs/'+company+'3.png'
     plt.savefig('Flask/static/'+ save_url)
+
