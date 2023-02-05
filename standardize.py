@@ -56,30 +56,27 @@ def generate_dummy_df():
 
         return df
 
+# Generate the data using the function
 data = generate_dummy_df()
+
+# Reorder the data in A,B,C,D,E ...
 indexes = []
 print(int(len(data)/5))
-for i in range(1, int(len(data)/5) + 1):
-        for j in range(1,6):
-                indexes.append(j + i*5)
-print(indexes)
+for i in range(int(len(data)/5)):
+        for j in range(0,5):
+                indexes.append(i + j*int(len(data)/5))
+data = data.reindex(indexes)
 
-# Organize our data
+# Organize our data and split the data
 label_names = data['Rating']
 features = data.drop(columns=['Rating'])
 
-# Split our data
 train, test, train_labels, test_labels = train_test_split(features,
                                                           label_names,
                                                           test_size=0.33,
-                                                          shuffle = True,
+                                                          shuffle = False,
                                                           random_state=42)
 
-# print(train)
-# print(test)
-# print(train_labels)
-# print(test_labels)
-        
 
 
 
