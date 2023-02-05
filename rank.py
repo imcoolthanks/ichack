@@ -36,5 +36,5 @@ with open('model.sav', 'rb') as file:
     data = df.to_numpy()
     rankings = loaded_model.predict(data)
 
-    print(rankings)
-    np.savetxt("rankings.csv", rankings, delimiter=",")
+    print(rankings) 
+    pd.DataFrame(rankings).to_csv("rankings.csv", header = None)
