@@ -1,13 +1,13 @@
 # run with py -m flask --app="Flask/app.py" run
 
+import os
 from flask import Flask, render_template, Response, request, redirect, url_for
+from werkzeug.utils import secure_filename
 import sqlite3 as sql
 import json
 
-UPLOAD_FOLDER = "../Flask/logFiles"
-ALLOWED_EXTENSIONS = set(['.csv', '.txt'])
-
 app = Flask(__name__)
+UPLOAD_FOLDER = ['./csvFiles/']
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 @app.route('/')
@@ -22,9 +22,11 @@ def about_us():
 def benefits():
   return render_template("benefits.html")
 
-@app.route('/dashboard/', methods=["GET"])
-def dashboard():
-    return render_template("dashboard.html", company=request.args.get('name'))
+@app.route('/dashboard/<name>/<cat>', methods=["GET"])
+def dashboard(name, cat):
+    types = ["raw", "co2", "imports", "reusables"]
+    index = str(types.index(cat))
+    return render_template("dashboard.html", company=name, graph_url='Assets/graphs/'+name+index+".png", cat = cat)
 
 @app.route("/login/", methods = ['POST', 'GET'])
 def login():                
@@ -32,12 +34,16 @@ def login():
         email = request.form.get('email') 
         password = request.form.get('password')
 
+        #DELETE
+        email = "amazon@gmail.com"
+        password = "amazon"
+
         success, company = _login(email, password)
         
         if success:
             #Does stuff to load the website
-
-            return redirect(url_for('.dashboard', name=company))
+            graph(company)
+            return redirect(url_for('.dashboard', name=company, cat="raw"))
         else:
             return render_template('login.html', error="Incorrect email or password.")
 
@@ -64,17 +70,98 @@ def _login(email, password):
         print("Wrong Password")
         return False, ""
 
+def graph(company):
+    print("Graphing")
+    get_data(company)
+    plot(company)
+
 @app.route('/setting/')
 def setting():
     return render_template("setting.html")
   
-@app.route('/csv_download')
+@app.route('/csv_download', methods=['GET', 'POST'])
 def csv_download():
-    # with open("outputs/Adjacency.csv") as fp:
-    #     csv = fp.read()
-    csv = '1,2,3\n4,5,6\n'
-    return Response(
-        csv,
-        mimetype="text/csv",
-        headers={"Content-disposition":
-                 "attachment; filename=myplot.csv"})
+    file = request.files['file']
+    filename = secure_filename(file.filename)
+    file.save(os.path.join(app.config['../Flask/csvFiles'], filename))
+    return redirect("/setting")
+
+import numpy as np
+from matplotlib import pyplot as plt
+import datetime
+import sqlite3 as sql
+
+
+def get_data(company):
+    raw_materials_data = []
+    co2_data = []
+    percentage_foreign = []
+    percentage_reusable = []
+        
+    conn = sql.connect("companies.db")
+    cur = conn.cursor()
+
+    cur.execute("select * from " + company)
+    
+    rows = list(cur.fetchall())
+
+    conn.close()
+
+    for r in rows:
+        raw_materials_data.append(r[0])
+        co2_data.append(r[1])
+        percentage_foreign.append(r[2])
+        percentage_reusable.append(r[3])
+
+    return raw_materials_data, co2_data, percentage_foreign, percentage_reusable
+
+def plot(company):
+    years = []
+
+    raw_materials_data, co2_data, percentage_foreign, percentage_reusable = get_data(company)
+
+    # get all the years
+    current_year = datetime.date.today().year
+    for i in range(len(raw_materials_data)):
+        years.append(current_year - i)
+    years.reverse
+
+    plt.plot(years, raw_materials_data)
+    plt.scatter(years, raw_materials_data, s = 10, color='black')
+    plt.title('Raw materials used in a year')
+    plt.xticks(np.arange(min(years), max(years)+1, 1.0))
+    plt.ylabel("Tonnes")
+    for index in range(len(years)):
+        plt.text(years[index], raw_materials_data[index], raw_materials_data[index], size=6)
+    save_url = 'Assets/graphs/'+company+'0.png'
+    plt.savefig('Flask/static/'+ save_url)
+
+    plt.plot(years, co2_data)
+    plt.scatter(years, co2_data, s = 10, color='black')
+    plt.title('CO2 emissions')
+    plt.xticks(np.arange(min(years), max(years)+1, 10.0))
+    plt.ylabel("Mass /g")
+    for index in range(len(years)):
+        plt.text(years[index], co2_data[index], co2_data[index], size=6)
+    save_url = 'Assets/graphs/'+company+'1.png'
+    plt.savefig('Flask/static/'+ save_url)
+
+    plt.plot(years, percentage_foreign)
+    plt.scatter(years, percentage_foreign, s = 10, color='black')
+    plt.title('Percentage of foreign imports of materials')
+    plt.xticks(np.arange(min(years), max(years)+1, 1.0))
+    plt.ylabel("Mass /g")
+    for index in range(len(years)):
+        plt.text(years[index], percentage_foreign[index], percentage_foreign[index], size=6)
+    save_url = 'Assets/graphs/'+company+'2.png'
+    plt.savefig('Flask/static/'+ save_url)
+
+    plt.plot(years, percentage_reusable)
+    plt.scatter(years, percentage_reusable, s = 10, color='black')
+    plt.title('Percentage of reusable material')
+    plt.xticks(np.arange(min(years), max(years)+1, 1.0))
+    plt.ylabel("Mass /g")
+    for index in range(len(years)):
+        plt.text(years[index], percentage_reusable[index], percentage_reusable[index], size=6)
+    save_url = 'Assets/graphs/'+company+'3.png'
+    plt.savefig('Flask/static/'+ save_url)

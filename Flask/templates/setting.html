@@ -58,14 +58,14 @@ Settings
               <div class="row" style="margin-bottom: 1em; --bs-gutter-x: 0em;">
                 <div class="card h-100">
                     <div class="card-body">  
-                      <form action="/csv_download" method="POST">
+                      <form action="/csv_download" method="post">
                         <h4>Input csv file</h4>
                         <div class="row" style="margin-bottom: 20px;">
                           <div class="col-md-9">
                               <input type="file" style="width:100%;" name = "csv" class="form-control" id="csv" accept=".csv, .txt">
                           </div>
                           <div class="col-md-3">
-                            <a href="/csv_download">Submit</a>
+                            <input type="submit" value="Submit">
                           </div>             
                         </div>
                       </form>
