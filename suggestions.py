@@ -12,16 +12,16 @@ messeges = ['''Your CO2 emissions were higher than average, try to cut down on
             higher than average. You're company is sustainable! Keep it up!''']
 
 company = data[0]
-
+returnmessege = ''
 
 if company[1] < averages[0] & company[2] < averages[1] & company[3] > averages[2]:
-    print(messeges[3])
+    returnmessege = messeges[3]
 else:
     for i in range(0,3):
         if i+1 == 3:
             if company[i+1] < averages[i]:
-                print(messeges[i])
+                returnmessege = messeges[i]
         else:
             if company[i+1] > averages[i]:
-                print(messeges[i])
+                returnmessege = messeges[i]
     
