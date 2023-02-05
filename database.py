@@ -71,8 +71,6 @@ def list_all(company):
     print(rows)
 # -------------------------
 
-# get_file("validCompanies.csv", "Amazon")
-# list_all("Amazon")
 
 def create_logins():
 #Create database file/connect to it
@@ -130,6 +128,7 @@ def new_comp_size(): #Pass in an array of info (email, interest) like this
     cur.execute(insert_query, ("Cisco", 803))
     cur.execute(insert_query, ("Palantir", 124))
     cur.execute(insert_query, ("HRT", 324))
+    cur.execute(insert_query, ("Apple", 123))
 
     #Save changes
     conn.commit()
@@ -143,10 +142,12 @@ def list_all():
     conn = sql.connect("companies.db")
     cur = conn.cursor()
 
-    cur.execute("select * from logins")
+    cur.execute("select * from Cisco")
     
     rows = list(cur.fetchall())
 
     conn.close()
 
     print(rows)
+
+list_all()
