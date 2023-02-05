@@ -15,15 +15,18 @@ with open('model.sav', 'rb') as file:
 
     df = pd.DataFrame(data, columns = ["raw", "co2", "import", "reusable"])
 
+    df['raw'] = df['raw'].apply(lambda x: x * RAW_WEIGHT)
+    df['co2'] = df['co2'].apply(lambda x: x* CO2_WEIGHT) 
+    df['import'] = df['import'].apply(lambda x: x * IMPORT_WEIGHT)
+    df['reusable'] = df['reusable'].apply(lambda x: x * REUSABLE_WEIGHT)
+
     scaler = StandardScaler()
     standardized_data = scaler.fit_transform(df)
     standardized_df = pd.DataFrame(standardized_data, columns=df.columns)
     df = standardized_df
     
-    df['raw'] = df['raw'].apply(lambda x: x * -RAW_WEIGHT)
-    df['co2'] = df['co2'].apply(lambda x: x* -CO2_WEIGHT) 
-    df['import'] = df['import'].apply(lambda x: x * -IMPORT_WEIGHT)
-    df['reusable'] = df['reusable'].apply(lambda x: x * REUSABLE_WEIGHT)
+    df['co2'] = df['co2'].apply(lambda x: x* -1) 
+    df['import'] = df['import'].apply(lambda x: x * -1)
 
     r = len(df.index)
     for i in range(r):
@@ -32,4 +35,6 @@ with open('model.sav', 'rb') as file:
 
     data = df.to_numpy()
     rankings = loaded_model.predict(data)
+
     print(rankings)
+    np.savetxt("rankings.csv", rankings, delimiter=",")
