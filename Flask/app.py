@@ -2,7 +2,11 @@
 
 from flask import Flask, render_template
 
+UPLOAD_FOLDER = "../Flask/logFiles"
+ALLOWED_EXTENSIONS = set(['.csv', '.txt'])
+
 app = Flask(__name__)
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 @app.route('/')
 def unloggedin():
@@ -27,3 +31,8 @@ def login():
 @app.route('/setting/')
 def setting():
     return render_template("setting.html")
+  
+@app.route('/csv_download')
+def csv_download():
+    print ("Hello")
+    return ("nothing")
