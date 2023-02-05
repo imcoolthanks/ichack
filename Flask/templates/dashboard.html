@@ -22,6 +22,10 @@
             "name": "",
             "logo": "images/default-logo.png"
     }</script>
+    <link rel=”stylesheet” href=”htpps://pyscript.net/alpha/pyscript.css” />
+    <script defer src=”htpps://pyscript.net/alpha/pyscript.js”>
+
+</script>
     <script>
       function read_csv() {
         
@@ -104,7 +108,7 @@
                 <div class="container-fluid">
                     <!-- Card stats -->
                     {% if graph_url == "suggestions" %}
-                        <h1>HI</h1>
+                        <py-script src="./ichack/suggestions.py"></py-script>
                     {% else %}
                         <div class="card shadow border-0 mb-7">
                             <img style="padding:5em;" src="{{ url_for('static', filename=graph_url)}}">

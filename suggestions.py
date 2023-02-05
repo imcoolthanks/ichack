@@ -13,6 +13,7 @@ messeges = ['''Your CO2 emissions were higher than average, try to cut down on
 
 company = data[0]
 
+
 if company[1] < averages[0] & company[2] < averages[1] & company[3] > averages[2]:
     print(messeges[3])
 else:
