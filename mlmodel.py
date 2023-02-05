@@ -13,6 +13,7 @@ REUSABLE_WEIGHT = 0.2
 
 def generate_dummy_df():
         companies = []
+        averages = [0,0,0]
 
         for i in range(1000000): 
                 raw = round(random.uniform(7000, 9000), 6)
@@ -24,6 +25,9 @@ def generate_dummy_df():
                 co2Million * CO2_WEIGHT / companySize,
                 impManufacturing * IMPORT_WEIGHT,
                 reusable * REUSABLE_WEIGHT])
+                averages[0] += co2Million / (1000000*companySize)
+                averages[1] += impManufacturing / 1000000
+                averages[2] += reusable / 1000000
 
         df = pd.DataFrame(companies, columns 
         = ["raw", "co2", "import", "reusable"])
@@ -65,10 +69,10 @@ def generate_dummy_df():
         df['Rating'] = np.select(conditions, ratings)
         df = df.drop(columns=['RowNumber'])
 
-        return df
+        return df, averages
 
 # Generate the data using the function
-data = generate_dummy_df()
+data, averages = generate_dummy_df()
 
 # Reorder the data in A,B,C,D,E ...
 indexes = []
