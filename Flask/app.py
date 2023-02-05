@@ -1,6 +1,8 @@
 # run with py -m flask --app="Flask/app.py" run
 
-from flask import Flask, render_template, Response
+import os
+from flask import Flask, render_template, Response, request, redirect
+from werkzeug.utils import secure_filename
 
 UPLOAD_FOLDER = "../Flask/logFiles"
 ALLOWED_EXTENSIONS = set(['.csv', '.txt'])
@@ -34,11 +36,7 @@ def setting():
   
 @app.route('/csv_download')
 def csv_download():
-    # with open("outputs/Adjacency.csv") as fp:
-    #     csv = fp.read()
-    csv = '1,2,3\n4,5,6\n'
-    return Response(
-        csv,
-        mimetype="text/csv",
-        headers={"Content-disposition":
-                 "attachment; filename=myplot.csv"})
+    file = request.files['file']
+    filename = secure_filename(file.filename)
+    file.save(os.path.join(app.config['../Flask/csvFiles'], filename))
+    return redirect("/setting")
