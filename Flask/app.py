@@ -24,7 +24,8 @@ def benefits():
 
 @app.route('/dashboard/', methods=["GET"])
 def dashboard():
-    return render_template("dashboard.html", company=request.args.get('name'))
+    name = request.args.get('name')
+    return render_template("dashboard.html", company=name, graph_url='Assets/graphs/' + name + ".png")
 
 @app.route("/login/", methods = ['POST', 'GET'])
 def login():                
@@ -32,11 +33,15 @@ def login():
         email = request.form.get('email') 
         password = request.form.get('password')
 
+        #DELETE
+        email = "amazon@gmail.com"
+        password = "amazon"
+
         success, company = _login(email, password)
         
         if success:
             #Does stuff to load the website
-
+            graph(company)
             return redirect(url_for('.dashboard', name=company))
         else:
             return render_template('login.html', error="Incorrect email or password.")
@@ -63,6 +68,11 @@ def _login(email, password):
     else:
         print("Wrong Password")
         return False, ""
+
+def graph(company):
+    print("Graphing")
+    get_data(company)
+    plot(company)
 
 @app.route('/setting/')
 def setting():

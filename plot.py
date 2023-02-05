@@ -86,7 +86,6 @@ def plot(company):
 
     fig.tight_layout()
 
-    plt.show()
-
-print(get_data("Jiawen"))
-plot("Jiawen")
+    #Save Graph
+    save_url = 'Assets/graphs/'+company+'.png'
+    plt.savefig('Flask/static/'+ save_url)

@@ -78,9 +78,9 @@ def list_all(company):
 # new_company_data("Amazon.db", [80.0, 19.2, 22.23, 73.77])
 # list_all("Amazon")
 
-# get_file("validCompanies.csv", "Jiawen")
-# new_company_data("validCompanies.csv", "Jiawen")
-# list_all("Jiawen")
+get_file("validCompanies.csv", "Amazon")
+new_company_data("validCompanies.csv", "Amazon")
+list_all("Amazon")
 
 def create_logins():
 #Create database file/connect to it
