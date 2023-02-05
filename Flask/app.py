@@ -24,10 +24,11 @@ def about_us():
 def benefits():
   return render_template("benefits.html")
 
-@app.route('/dashboard/', methods=["GET"])
-def dashboard():
-    name = request.args.get('name')
-    return render_template("dashboard.html", company=name, graph_url='Assets/graphs/' + name + ".png")
+@app.route('/dashboard/<name>/<cat>', methods=["GET"])
+def dashboard(name, cat):
+    types = ["raw", "co2", "imports", "reusables"]
+    index = str(types.index(cat))
+    return render_template("dashboard.html", company=name, graph_url='Assets/graphs/'+name+index+".png", cat = cat)
 
 @app.route("/login/", methods = ['POST', 'GET'])
 def login():                
@@ -44,7 +45,7 @@ def login():
         if success:
             #Does stuff to load the website
             graph(company)
-            return redirect(url_for('.dashboard', name=company))
+            return redirect(url_for('.dashboard', name=company, cat="raw"))
         else:
             return render_template('login.html', error="Incorrect email or password.")
 
@@ -127,46 +128,42 @@ def plot(company):
         years.append(current_year - i)
     years.reverse
 
-    #Plotting data
-    fig, ((ax1, ax2), (ax3, ax4)) = plt.subplots(2, 2, figsize=(8,8))
-
-    fig.suptitle('Sustainablity of ' + company)
-
-    ax1.plot(years, raw_materials_data)
-    ax1.scatter(years, raw_materials_data, s = 10, color='black')
-    ax1.title.set_text('Raw materials used in a year')
+    plt.plot(years, raw_materials_data)
+    plt.scatter(years, raw_materials_data, s = 10, color='black')
+    plt.title('Raw materials used in a year')
     plt.xticks(np.arange(min(years), max(years)+1, 1.0))
-    ax1.set_ylabel("Tonnes")
+    plt.ylabel("Tonnes")
     for index in range(len(years)):
-        ax1.text(years[index], raw_materials_data[index], raw_materials_data[index], size=6)
+        plt.text(years[index], raw_materials_data[index], raw_materials_data[index], size=6)
+    save_url = 'Assets/graphs/'+company+'0.png'
+    plt.savefig('Flask/static/'+ save_url)
 
-
-    ax2.plot(years, co2_data)
-    ax2.scatter(years, co2_data, s = 10, color='black')
-    ax2.title.set_text('CO2 emissions')
+    plt.plot(years, co2_data)
+    plt.scatter(years, co2_data, s = 10, color='black')
+    plt.title('CO2 emissions')
     plt.xticks(np.arange(min(years), max(years)+1, 10.0))
-    ax2.set_ylabel("Mass /g")
+    plt.ylabel("Mass /g")
     for index in range(len(years)):
-        ax2.text(years[index], co2_data[index], co2_data[index], size=6)
+        plt.text(years[index], co2_data[index], co2_data[index], size=6)
+    save_url = 'Assets/graphs/'+company+'1.png'
+    plt.savefig('Flask/static/'+ save_url)
 
-    ax3.plot(years, percentage_foreign)
-    ax3.scatter(years, percentage_foreign, s = 10, color='black')
-    ax3.title.set_text('Percentage of foreign imports of materials')
+    plt.plot(years, percentage_foreign)
+    plt.scatter(years, percentage_foreign, s = 10, color='black')
+    plt.title('Percentage of foreign imports of materials')
     plt.xticks(np.arange(min(years), max(years)+1, 1.0))
-    ax3.set_ylabel("Mass /g")
+    plt.ylabel("Mass /g")
     for index in range(len(years)):
-        ax3.text(years[index], percentage_foreign[index], percentage_foreign[index], size=6)
+        plt.text(years[index], percentage_foreign[index], percentage_foreign[index], size=6)
+    save_url = 'Assets/graphs/'+company+'2.png'
+    plt.savefig('Flask/static/'+ save_url)
 
-    ax4.plot(years, percentage_reusable)
-    ax4.scatter(years, percentage_reusable, s = 10, color='black')
-    ax4.title.set_text('Percentage of reusable material')
+    plt.plot(years, percentage_reusable)
+    plt.scatter(years, percentage_reusable, s = 10, color='black')
+    plt.title('Percentage of reusable material')
     plt.xticks(np.arange(min(years), max(years)+1, 1.0))
-    ax4.set_ylabel("Mass /g")
+    plt.ylabel("Mass /g")
     for index in range(len(years)):
-        ax4.text(years[index], percentage_reusable[index], percentage_reusable[index], size=6)
-
-    fig.tight_layout()
-
-    #Save Graph
-    save_url = 'Assets/graphs/'+company+'.png'
+        plt.text(years[index], percentage_reusable[index], percentage_reusable[index], size=6)
+    save_url = 'Assets/graphs/'+company+'3.png'
     plt.savefig('Flask/static/'+ save_url)
