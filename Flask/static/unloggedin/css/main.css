@@ -297,7 +297,9 @@ p {
 .navbar-light .navbar-nav .active>.nav-link, .navbar-light .navbar-nav .nav-link.active, .navbar-light .navbar-nav .nav-link.show, .navbar-light .navbar-nav .show>.nav-link {
   color: #FF3946;
 }
-.navbar {
+.navbar .nav-link{
+  color: #314584;
+  font-size: 1.1rem;
   padding: 5px 0 0 0;
 }
 .navbar-light .navbar-brand {
