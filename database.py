@@ -87,19 +87,6 @@ def create_logins():
         except:
             print("Table alr existed")
 
-def create_comp_size():
-#Create database file/connect to it
-        conn = sql.connect("logins.db")
-        try:
-        #Create table
-            query = """CREATE TABLE company_size (company TEXT PRIMARY KEY, company_size int)"""
-
-            conn.execute(query)
-
-            print("table created")
-        except:
-            print("Table alr existed")
-
 def new_logins(): #Pass in an array of info (email, interest) like this
     #Connect to database
     conn = sql.connect("logins.db")
@@ -119,9 +106,22 @@ def new_logins(): #Pass in an array of info (email, interest) like this
 
     print("Loading completed")
 
+def create_comp_size():
+#Create database file/connect to it
+        conn = sql.connect("companies.db")
+        try:
+        #Create table
+            query = """CREATE TABLE company_size (company TEXT PRIMARY KEY, company_size int)"""
+
+            conn.execute(query)
+
+            print("table created")
+        except:
+            print("Table alr existed")
+
 def new_comp_size(): #Pass in an array of info (email, interest) like this
     #Connect to database
-    conn = sql.connect("logins.db")
+    conn = sql.connect("companies.db")
     cur = conn.cursor()
     
     #Load all rows
@@ -140,10 +140,10 @@ def new_comp_size(): #Pass in an array of info (email, interest) like this
 
 # ---- DEBUGGING ---------
 def list_all(): 
-    conn = sql.connect("logins.db")
+    conn = sql.connect("companies.db")
     cur = conn.cursor()
 
-    cur.execute("select * from company_size")
+    cur.execute("select * from logins")
     
     rows = list(cur.fetchall())
 
