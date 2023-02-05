@@ -4,13 +4,12 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
 import random
+import pickle
 
 RAW_WEIGHT = 0.1
 CO2_WEIGHT = 0.45
 IMPORT_WEIGHT = 0.15
 REUSABLE_WEIGHT = 0.2
-CO2_AVG = 8196721.31147541
-RAW_AVG = 8852
 
 def generate_dummy_df():
         companies = []
@@ -50,7 +49,7 @@ def generate_dummy_df():
         block = len(df.index)/5
         df['RowNumber'] = np.arange(1, len(df)+1, 1)
 
-        ratings = ['A', 'B', 'C', 'D', 'E']
+        ratings = ['E', 'D', 'C', 'B', 'A']
 
         # create a list of our conditions
         conditions = [
@@ -101,6 +100,5 @@ print(y_test)
 score = model.score(X_test.values, y_test)
 print("Accuracy:", score)
 
-companies = np.array([[-0.187780, 0.186108, -0.101936, -0.075336]])
-predicted_ranks = model.predict(companies)
-print("Predicted Ranks:", predicted_ranks[0])
+with open('model.sav', 'wb') as file:
+        pickle.dump(model, file)
