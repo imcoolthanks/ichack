@@ -55,7 +55,7 @@ def plot(company):
     plt.xticks(np.arange(min(years), max(years)+1, 1.0))
     
     plt.ylabel("Tonnes")
-    scale = (min(raw_materials_data) + max(raw_materials_data))/2
+    scale = (min(raw_materials_data) - max(raw_materials_data))/2
     plt.gca().set_ylim([min(raw_materials_data) + scale, max(raw_materials_data) - scale])
     
     for index in range(len(years)):
@@ -74,8 +74,8 @@ def plot(company):
     plt.xticks(np.arange(min(years), max(years)+1, 10.0))
     
     plt.ylabel("Mass /g")
-    scale = (min(co2_data) + max(co2_data))/2
-    plt.gca().set_ylim([min(co2_data) + 2, max(co2_data) - 2])
+    scale = (min(co2_data) - max(co2_data))/2
+    plt.gca().set_ylim([min(co2_data) + scale, max(co2_data) - scale])
     
     for index in range(len(years)):
         plt.text(years[index], co2_data[index], co2_data[index], size=6)
@@ -93,8 +93,8 @@ def plot(company):
     plt.xticks(np.arange(min(years), max(years)+1, 1.0))
     
     plt.ylabel("Mass /g")
-    scale = (min(percentage_foreign) + max(percentage_foreign))/2
-    plt.gca().set_ylim([min(percentage_foreign) + 10, max(percentage_foreign) - 10])
+    scale = (min(percentage_foreign) - max(percentage_foreign))/2
+    plt.gca().set_ylim([min(percentage_foreign) + scale, max(percentage_foreign) - scale])
     
     for index in range(len(years)):
         plt.text(years[index], percentage_foreign[index], percentage_foreign[index], size=6)
@@ -112,8 +112,8 @@ def plot(company):
     plt.xticks(np.arange(min(years), max(years)+1, 1.0))
     
     plt.ylabel("Mass /g")
-    scale = (min(percentage_reusable) + max(percentage_reusable))/2
-    plt.gca().set_ylim([min(percentage_reusable) + 100, max(percentage_reusable) - 100])
+    scale = (min(percentage_reusable) - max(percentage_reusable))/2
+    plt.gca().set_ylim([min(percentage_reusable) + scale, max(percentage_reusable) - scale])
     
     for index in range(len(years)):
         plt.text(years[index], percentage_reusable[index], percentage_reusable[index], size=6)
