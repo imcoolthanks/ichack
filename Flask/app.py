@@ -37,6 +37,10 @@ def login():
         email = request.form.get('email') 
         password = request.form.get('password')
 
+        #DELETE
+        email = "amazon@gmail.com"
+        password = "amazon"
+
         success, company = _login(email, password)
         
         if success:
