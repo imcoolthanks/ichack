@@ -74,10 +74,55 @@ def list_all(company):
     print(rows)
 # -------------------------
 
-#get_file("companies.csv", "Safari")
+# get_file("companies.csv", "Safari")
 # new_company_data("Amazon.db", [80.0, 19.2, 22.23, 73.77])
 # list_all("Amazon")
 
-get_file("validCompanies.csv", "Jiawen")
-new_company_data("validCompanies.csv", "Jiawen")
-list_all("Jiawen")
+# get_file("validCompanies.csv", "Jiawen")
+# new_company_data("validCompanies.csv", "Jiawen")
+# list_all("Jiawen")
+
+def create_logins():
+#Create database file/connect to it
+        conn = sql.connect("logins.db")
+        try:
+        #Create table
+            query = """CREATE TABLE logins (company TEXT, email TEXT PRIMARY KEY, password TEXT)"""
+
+            conn.execute(query)
+
+            print("table created")
+        except:
+            print("Table alr existed")
+
+def new_logins(): #Pass in an array of info (email, interest) like this
+    #Connect to database
+    conn = sql.connect("logins.db")
+    cur = conn.cursor()
+    
+    #Load all rows
+    insert_query = """INSERT INTO logins (company, email, password) VALUES (?,?,?)"""
+    cur.execute(insert_query, ("Amazon", "amazon@gmail.com", "amazon"))
+    cur.execute(insert_query, ("Cisco", "cisco@gmail.com", "cisco"))
+    cur.execute(insert_query, ("Palantir", "palantir@gmail.com", "palantir"))
+    cur.execute(insert_query, ("HRT", "hrt@gmail.com", "hrt"))
+
+    #Save changes
+    conn.commit()
+
+    conn.close()
+
+    print("Loading completed")
+
+# ---- DEBUGGING ---------
+def list_all(): 
+    conn = sql.connect("logins.db")
+    cur = conn.cursor()
+
+    cur.execute("select * from logins")
+    
+    rows = list(cur.fetchall())
+
+    conn.close()
+
+    print(rows)
