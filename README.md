@@ -1,3 +1,3 @@
 # ichack
 
-Run using command: py -m flask --app="Flask/app.py"
+Run using command: py -m flask --app="Flask/app.py" run

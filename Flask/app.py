@@ -43,7 +43,6 @@ def dashboard(name, cat):
 
         if (float(co2[0]) < averages[0]) & ((float(imports[0])) < averages[1]) & ((float(reusables[0])) > averages[2]):
             returnmessege = messeges[3]
-
         if float(co2[0]) > averages[0]:
             returnmessege = messeges[0]
         if float(imports[0]) > averages[1]:
@@ -123,7 +122,6 @@ import numpy as np
 from matplotlib import pyplot as plt
 import datetime
 import sqlite3 as sql
-
 
 def get_data(company):
     raw_materials_data = []

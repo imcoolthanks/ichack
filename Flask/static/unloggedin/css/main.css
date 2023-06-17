@@ -5,7 +5,7 @@
     Author URI: https://www.graphberry.com/
     Version: 1.0
 -------------------------------------------------------------*/
-
+footer
 
 /*-----------------------------------------------------------
     1  General Styles
@@ -139,6 +139,8 @@ p {
   filter: brightness(40%);
   z-index: -10000;
   opacity: 0.8;
+  background-repeat: no-repeat;
+  background-size: cover; 
 }
 /*-----------------------------------------------------------
   3. Buttons & Links
@@ -194,7 +196,7 @@ p {
   transition: all 0.3s ease;
 }
 .navbar-light .navbar-toggler {
-  color: #314584;
+  color: white;
   border: none;
   max-width: 100%;
 }
@@ -306,7 +308,7 @@ p {
   color: #FF3946;
 }
 .navbar .nav-link{
-  color: #314584;
+  color: white;
   font-size: 1.1rem;
   padding: 5px 0 0 0;
 }
@@ -335,7 +337,7 @@ p {
   margin-bottom: 50px;
 }
 .unloggedin-header {
-  background-color: #dfc5a9;
+  background-color: #314584;
   width: 100%;
 }
 /*-----------------------------------------------------------
@@ -652,9 +654,8 @@ textarea {
 footer {
   background-color: #314584;
   width: 100%;
-  min-height: 200px;
   text-align: center;
-  padding: 30px 0px 0px 0px;
+  padding: 22px 30px;
 }
 footer h5{
   color: #fff;

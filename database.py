@@ -152,4 +152,5 @@ def list_all():
 
 create_logins()
 new_logins()
-list_all()
+create_comp_size()
+new_comp_size()
